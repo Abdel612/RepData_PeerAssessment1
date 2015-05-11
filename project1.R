@@ -1,24 +1,24 @@
 #
-# Unzip data archive file
+# Unzip data archive file (ZIP) - Default to archive name (fileName) = activity.zip
 #
-uncompressDataArchive = function(fileName="activity.zip"){ 
+uncompressDataArchive = function(fileName = "activity.zip"){ 
     unzip(fileName, files = NULL, list = FALSE, overwrite = TRUE,
           junkpaths = FALSE, exdir = ".", unzip = "internal",
           setTimes = FALSE)
 }
 
 #
-# Load dataset
+# Load dataset from a CSV file - Default to file name (fileName) = activity.csv
 #
-loadDataset = function(fromFileName="activity.csv"){
-  dataSet=read.csv(fromFileName)
+loadDataset = function(fromFileName  ="activity.csv"){
+  dataSet = read.csv(fromFileName)
   return(dataSet)
 }
 
 
 
 #
-# Compute mean steps by date
+# Compute mean total (sum) steps by date
 #
 # Return a new data.frame with 2 columns:
 #     - date : POSIX Date in YYYY-MM-DD format
@@ -27,7 +27,7 @@ getNumberOfStepsByDate = function(dataSet){
   totalStepPerDay = tapply(dataSet$steps, dataSet$date, sum, na.rm = TRUE)
   theDate = names(totalStepPerDay)
   theTotal = as.numeric(totalStepPerDay)
-  result = data.frame(date=strptime(theDate, format="%Y-%m-%d"), steps=theTotal)
+  result = data.frame(date = strptime(theDate, format="%Y-%m-%d"), steps = theTotal)
   return( result )
 }
 
@@ -75,8 +75,10 @@ rm(question1DF) # gain some memory space by removing this dataset (no more use)
 
 #   Step 1: Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and 
 #         the average number of steps taken, averaged across all days (y-axis)
-question2List=tapply(originalDF$steps, originalDF$interval, mean, na.rm=TRUE)
-plot(names(question2List), as.numeric(question2List), type="l", xlab="Interval", ylab="# daily steps", main="Average steps")
+question2List=tapply(originalDF$steps, originalDF$interval, mean, na.rm = TRUE)
+plot(names(question2List), as.numeric(question2List), 
+     type = "l",
+     xlab = "Interval", ylab = "# daily steps", main = "Average steps")
 
 #   Step 2: Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 idxMaxSteps = which.max(question2List)
@@ -167,7 +169,7 @@ weekdayAvgDF = data.frame( interval = as.numeric( names(weekdayAvg) ), steps = f
 
 # Build weekend dataset with total steps an interval over all considered week-end day
 weekendDF = subset(question4DF, question4DF$weekday == WEEK_END)
-weekendAvg=tapply(weekendDF$steps, weekendDF$interval, mean)
+weekendAvg = tapply(weekendDF$steps, weekendDF$interval, mean)
 weekendAvgDF = data.frame( interval = as.numeric( names(weekendAvg) ), steps = floor(as.numeric(weekendAvg)+0.5), weekday.type = rep(WEEK_END,length(weekendAvg) ) ) 
 
 # The final dataset is made of the two above dataset (weekday and weekden)
