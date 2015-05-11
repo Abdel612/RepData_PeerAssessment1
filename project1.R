@@ -133,8 +133,8 @@ rm(question3DF) # gain some memory space by removing this dataset (no more use)
 #
 # QUESTION 4: Are there differences in activity patterns between weekdays and weekends?
 #             Use the dataset with the filled-in missing values for this part.
-WEEK_DAY = "weekday" # Constant for weekday.type factor column (see below) => It's on week day
-WEEK_END = "weekend" # Constant for weekday.type factor column (see below) => It's on week-end
+WEEK_DAY = "Week Day" # Constant for weekday.type factor column (see below) => It's on week day
+WEEK_END = "Week-End" # Constant for weekday.type factor column (see below) => It's on week-end
 question4DF = originalDF
 question4DF$steps[missingStepIdx] = floor( as.numeric(question2List[as.character(originalDF$interval[missingStepIdx])]) + 0.5 )
 
