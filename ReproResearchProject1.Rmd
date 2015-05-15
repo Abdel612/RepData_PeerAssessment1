@@ -1,0 +1,71 @@
+---
+title: "Coursera 'Reproductible Research'- Assignment #1"
+author: "Abdel612"
+date: "May, 11th of 2015"
+---
+
+This is the R Markdown document as required by the Coursera "Reproductible Research" course's assignement #1.  
+
+
+
+# Helper Functions
+Let's start with some helper functions that allow us to uncrompress the provided data file , reading and filling the dataset up with measured values, and ending with a function computing the total number of step done in a day..
+
+### Uncompress the provided data file (unziping the .zip file)
+This function does not return anything, but makes the job to unzip the archive given by parameter *fileName*:
+```{r, echo=TRUE}
+#
+# Unzip data archive file. Default file name="activity.zip"
+#
+uncompressDataArchive = function(fileName="activity.zip"){ 
+    unzip(fileName, files = NULL, list = FALSE, overwrite = TRUE,
+          junkpaths = FALSE, exdir = ".", unzip = "internal",
+          setTimes = FALSE)
+}
+```
+
+### Read the data file and load values in the returned data frame
+Load any CSV formatted file given by parameter *fromFileName*
+
+Returns a data frame corresponding to the CSV file
+```{r, echo=TRUE}
+#
+# Load dataset according to a file name which defaulted to "activity.csv"
+#
+loadDataset = function(fromFileName="activity.csv"){
+  dataSet=read.csv(fromFileName)
+  return(dataSet)
+}
+```
+
+### Compute the total number of steps by date. 
+Returns a data frame made of 2 variables: 
+
+- date : POSIX : the considered date
+- steps: numeric : Total number of steps done the day date
+```{r, echo=TRUE}
+#
+# Compute mean steps by date
+#
+# Return a new data.frame with 2 columns:
+#     - date : POSIX Date in YYYY-MM-DD format
+#     - steps: numeric : Total number of steps in the day "date"
+getNumberOfStepsByDate = function(dataSet){
+  totalStepPerDay = tapply(dataSet$steps, dataSet$date, sum, na.rm = TRUE)
+  theDate = names(totalStepPerDay)
+  theTotal = as.numeric(totalStepPerDay)
+  result = data.frame(date=strptime(theDate, format="%Y-%m-%d"), steps=theTotal)
+  return( result )
+}
+```
+
+
+
+Y
+ou can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
